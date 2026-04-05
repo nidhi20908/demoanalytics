@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>nidhi Store — Shop</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+  .shop-hero {
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg3) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 40px 48px;
+    text-align: center;
+  }
+  .shop-hero h1 { font-size: clamp(2.5rem,5vw,4rem); font-weight:300; color:var(--cream); }
+  .shop-hero p { color:var(--muted); margin-top:12px; }
+
+  .filter-bar {
+    background: var(--bg2); border-bottom: 1px solid var(--border);
+    padding: 16px 40px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+    max-width: 100%;
+  }
+  .filter-label { font-size:0.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-right:4px; }
+  .filter-btn {
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--muted); padding: 7px 16px; border-radius: var(--radius);
+    font-size: 0.75rem; letter-spacing:1px; text-transform:uppercase; cursor:pointer;
+    font-family:'DM Sans',sans-serif; transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active { background: var(--gold); border-color: var(--gold); color: var(--bg); }
+
+  .shop-count { font-size:0.82rem; color:var(--muted); margin-left:auto; }
+</style>
+</head>
+<body>
+
+<div class="promo-banner">✦ Free Shipping on Orders Over ₹999 &nbsp;|&nbsp; Code: LUXE20 for 20% Off ✦</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">LUXE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html" class="active">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="cart.html" class="cart-btn">🛒 Cart <span class="cart-count" id="cartCount">0</span></a>
+  </div>
+</nav>
+
+<!-- SHOP HERO -->
+<div class="shop-hero">
+  <div class="section-tag">Our Collection</div>
+  <h1>All Products</h1>
+  <div class="divider"></div>
+  <p>Premium items thoughtfully curated for your lifestyle.</p>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">/</span>
+  <span class="current">Shop</span>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-btn active" onclick="filterProducts('all',this)">All</button>
+  <button class="filter-btn" onclick="filterProducts('Watches',this)">Watches</button>
+  <button class="filter-btn" onclick="filterProducts('Bags',this)">Bags</button>
+  <button class="filter-btn" onclick="filterProducts('Jewellery',this)">Jewellery</button>
+  <button class="filter-btn" onclick="filterProducts('Footwear',this)">Footwear</button>
+  <button class="filter-btn" onclick="filterProducts('Eyewear',this)">Eyewear</button>
+  <button class="filter-btn" onclick="filterProducts('Skincare',this)">Skincare</button>
+  <span class="shop-count" id="shop-count">8 Products</span>
+</div>
+
+<!-- PRODUCTS -->
+<div class="section" style="padding-top:40px">
+  <div class="products-grid" id="all-products"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="logo">LUXE</div><p>Curated luxury for the discerning few.</p></div>
+    <div class="footer-col"><h4>Shop</h4><ul><li><a href="shop.html">All Products</a></li><li><a href="index.html">Home</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="#">Track Order</a></li><li><a href="#">Returns</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 LUXE Store. All rights reserved.</p>
+    <div class="payment-icons">💳 🏧 📱 💰</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="cart.js"></script>
+<script>
+  let currentFilter = 'all';
+
+  function renderFiltered(cat) {
+    const c = document.getElementById('all-products');
+    const items = cat === 'all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===cat);
+    document.getElementById('shop-count').textContent = items.length + ' Product' + (items.length!==1?'s':'');
+    c.innerHTML = items.map(p=>`
+      <div class="product-card">
+        <div class="product-img">
+          ${p.badge ? `<div class="product-badge ${p.badgeClass}">${p.badge}</div>` : ''}
+          <span style="font-size:4rem">${p.emoji}</span>
+        </div>
+        <div class="product-info">
+          <div class="product-cat">${p.cat}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-desc">${p.desc}</div>
+          <div class="product-footer">
+            <div class="product-price">₹${p.price.toLocaleString()}</div>
+            <button class="add-to-cart" id="atc-${p.id}" onclick="handleAddToCart(${p.id})">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterProducts(cat, btn) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderFiltered(cat);
+  }
+
+  renderFiltered('all');
+</script>
+</body>
+</html>
