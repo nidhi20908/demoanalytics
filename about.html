@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LUXE Store — About Us</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+  .about-hero {
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg3) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 40px 60px; text-align: center;
+  }
+  .about-hero h1 { font-size:clamp(2.5rem,5vw,4.5rem); font-weight:300; color:var(--cream); }
+  .about-hero p { color:var(--muted); margin-top:18px; line-height:1.9; font-size:1rem; max-width:720px; margin-left:auto; margin-right:auto; }
+
+  .values-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:24px; }
+  .value-card {
+    background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius);
+    padding:32px 28px; transition:border-color 0.2s, transform 0.2s;
+  }
+  .value-card:hover { border-color:var(--gold); transform:translateY(-4px); }
+  .value-icon { font-size:2.2rem; margin-bottom:16px; }
+  .value-card h3 { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--cream); margin-bottom:10px; }
+  .value-card p { font-size:0.85rem; color:var(--muted); line-height:1.8; }
+
+  .stats-strip { background:var(--bg3); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:60px 40px; text-align:center; }
+  .stats-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:32px; }
+  .stat h2 { font-family:'Cormorant Garamond',serif; font-size:3rem; color:var(--gold); font-weight:300; }
+  .stat p { font-size:0.78rem; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-top:6px; }
+
+  .team-section { padding:80px 40px; max-width:1200px; margin:0 auto; }
+  .team-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:24px; margin-top:40px; }
+  .team-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:28px; text-align:center; transition:border-color 0.2s; }
+  .team-card:hover { border-color:var(--gold); }
+  .team-avatar { width:72px; height:72px; border-radius:50%; background:var(--bg3); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 16px; }
+  .team-card h4 { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--cream); margin-bottom:4px; }
+  .team-card span { font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); }
+  .team-card p { font-size:0.8rem; color:var(--muted); margin-top:10px; line-height:1.6; }
+</style>
+</head>
+<body>
+
+<div class="promo-banner">✦ Free Shipping on Orders Over ₹999 &nbsp;|&nbsp; Code: LUXE20 for 20% Off ✦</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">LUXE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="cart.html" class="cart-btn">🛒 Cart <span class="cart-count" id="cartCount">0</span></a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span class="sep">/</span>
+  <span class="current">About Us</span>
+</div>
+
+<!-- HERO -->
+<div class="about-hero">
+  <div class="section-tag">Our Story</div>
+  <h1>Where Luxury Meets Intention</h1>
+  <div class="divider"></div>
+  <p>LUXE was born from a simple belief: that beautifully crafted objects have the power to elevate everyday life. We curate only the finest products, working with artisans and brands who share our uncompromising commitment to quality, sustainability, and timeless design.</p>
+  <p style="margin-top:16px">Founded in 2019, we've grown from a small Mumbai boutique to a trusted destination for over 50,000 discerning customers across India who believe what surrounds you shapes who you are.</p>
+</div>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat"><h2>50K+</h2><p>Happy Customers</p></div>
+    <div class="stat"><h2>200+</h2><p>Curated Products</p></div>
+    <div class="stat"><h2>6</h2><p>Years of Excellence</p></div>
+    <div class="stat"><h2>30</h2><p>Artisan Partners</p></div>
+  </div>
+</div>
+
+<!-- VALUES -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-tag">What We Stand For</div>
+    <h2>Our Values</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="values-grid">
+    <div class="value-card"><div class="value-icon">🌿</div><h3>Sustainably Sourced</h3><p>Every product is vetted for ethical sourcing and sustainable production. We believe luxury should never come at the cost of the planet.</p></div>
+    <div class="value-card"><div class="value-icon">🔍</div><h3>Expertly Curated</h3><p>Our buyers travel the world to discover exceptional products. Less than 5% of submissions make it onto our shelves — only the truly exceptional earn a place.</p></div>
+    <div class="value-card"><div class="value-icon">🤝</div><h3>Artisan Partners</h3><p>We partner directly with craftsmen and small-batch producers, ensuring fair wages and preserving traditional techniques that might otherwise be lost.</p></div>
+    <div class="value-card"><div class="value-icon">⭐</div><h3>Quality Guarantee</h3><p>Every item comes with our 30-day quality guarantee. If it doesn't meet your expectations, we'll make it right — no questions asked.</p></div>
+    <div class="value-card"><div class="value-icon">📦</div><h3>Luxury Packaging</h3><p>Every order is wrapped in our signature packaging using recycled materials — because the unboxing experience is part of the gift.</p></div>
+    <div class="value-card"><div class="value-icon">💬</div><h3>Personal Service</h3><p>Our concierge team is available 7 days a week for personalized styling advice, gifting recommendations, and any questions.</p></div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="team-section">
+  <div class="section-header">
+    <div class="section-tag">The People Behind LUXE</div>
+    <h2>Meet Our Team</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="team-grid">
+    <div class="team-card"><div class="team-avatar">👩</div><h4>Priya Mehta</h4><span>Founder & CEO</span><p>Former luxury buyer at Harrods with 15 years of experience in premium retail.</p></div>
+    <div class="team-card"><div class="team-avatar">👨</div><h4>Rohan Desai</h4><span>Head of Curation</span><p>Travels 6 months a year discovering the world's finest artisans and brands.</p></div>
+    <div class="team-card"><div class="team-avatar">👩</div><h4>Ananya Kapoor</h4><span>Creative Director</span><p>Award-winning designer who shapes every visual touchpoint of the LUXE experience.</p></div>
+    <div class="team-card"><div class="team-avatar">👨</div><h4>Vikram Nair</h4><span>Customer Experience</span><p>Dedicated to ensuring every LUXE customer feels like our most important guest.</p></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="logo">LUXE</div><p>Curated luxury for the discerning few.</p></div>
+    <div class="footer-col"><h4>Shop</h4><ul><li><a href="shop.html">All Products</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="#">Track Order</a></li><li><a href="#">Returns</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 LUXE Store. All rights reserved.</p><div class="payment-icons">💳 🏧 📱 💰</div></div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="cart.js"></script>
+</body>
+</html>
