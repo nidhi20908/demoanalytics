@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>nidhi Store — Checkout</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+  .checkout-layout { display:grid; grid-template-columns:1fr 380px; gap:40px; }
+  @media(max-width:960px){ .checkout-layout{grid-template-columns:1fr;} }
+
+  .checkout-form-box {
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:var(--radius); padding:36px;
+  }
+  .form-section { margin-bottom:32px; }
+  .form-section-title {
+    font-family:'Cormorant Garamond',serif; font-size:1.4rem;
+    color:var(--cream); margin-bottom:20px; padding-bottom:12px;
+    border-bottom:1px solid var(--border);
+  }
+
+  .radio-group { display:flex; flex-direction:column; gap:12px; }
+  .radio-option {
+    display:flex; align-items:center; gap:12px;
+    background:var(--bg3); border:1px solid var(--border);
+    border-radius:var(--radius); padding:14px 16px; cursor:pointer; transition:border-color 0.2s;
+  }
+  .radio-option:hover { border-color:var(--gold); }
+  .radio-option input[type=radio] { accent-color:var(--gold); transform:scale(1.2); cursor:pointer; }
+  .radio-label { flex:1; }
+  .radio-label strong { display:block; font-size:0.88rem; color:var(--cream); }
+  .radio-label span { font-size:0.78rem; color:var(--muted); }
+  .radio-price { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--gold); }
+
+  .purchase-btn {
+    width:100%; background:var(--gold); color:var(--bg);
+    padding:18px; border:none; cursor:pointer;
+    font-family:'DM Sans',sans-serif; font-size:0.85rem;
+    letter-spacing:2px; text-transform:uppercase; font-weight:700;
+    border-radius:var(--radius); margin-top:8px; transition:all 0.25s;
+  }
+  .purchase-btn:hover { background:var(--gold2); transform:translateY(-2px); box-shadow:0 8px 24px rgba(201,168,76,0.3); }
+
+  /* Order Summary Sidebar */
+  .order-summary-box {
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:var(--radius); padding:28px; position:sticky; top:90px; height:fit-content;
+  }
+  .order-summary-box h3 { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--cream); margin-bottom:20px; }
+  .order-item { display:flex; gap:12px; align-items:center; margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+  .order-item:last-child { border-bottom:none; }
+  .order-item-img { font-size:1.6rem; width:46px; height:46px; background:var(--bg3); border-radius:2px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .order-item-info { flex:1; }
+  .order-item-name { font-size:0.85rem; color:var(--cream); margin-bottom:2px; }
+  .order-item-qty { font-size:0.75rem; color:var(--muted); }
+  .order-item-price { font-size:1rem; color:var(--gold); font-family:'Cormorant Garamond',serif; font-weight:600; }
+  .summary-row { display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.88rem; color:var(--muted); }
+  .summary-row.total { font-size:1.1rem; color:var(--cream); font-weight:500; border-top:1px solid var(--border); padding-top:14px; margin-top:14px; }
+  .summary-row.total span:last-child { color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:1.35rem; }
+  .secure-badge { display:flex; align-items:center; gap:8px; margin-top:16px; padding:12px; background:var(--bg3); border-radius:var(--radius); font-size:0.75rem; color:var(--muted); }
+
+  /* Steps indicator */
+  .checkout-steps { display:flex; align-items:center; justify-content:center; gap:0; margin-bottom:40px; }
+  .step { display:flex; align-items:center; gap:8px; }
+  .step-num { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:600; }
+  .step.done .step-num { background:var(--green); color:#fff; }
+  .step.active .step-num { background:var(--gold); color:var(--bg); }
+  .step.inactive .step-num { background:var(--bg3); border:1px solid var(--border); color:var(--muted); }
+  .step-label { font-size:0.72rem; letter-spacing:1px; text-transform:uppercase; }
+  .step.active .step-label { color:var(--gold); }
+  .step.done .step-label { color:var(--green); }
+  .step.inactive .step-label { color:var(--muted); }
+  .step-line { width:50px; height:1px; background:var(--border); margin:0 8px; }
+  .step-line.done { background:var(--green); }
+</style>
+</head>
+<body>
+
+<div class="promo-banner">✦ Free Shipping on Orders Over ₹999 &nbsp;|&nbsp; Code: LUXE20 for 20% Off ✦</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">LUXE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="cart.html" class="cart-btn">🛒 Cart <span class="cart-count" id="cartCount">0</span></a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span class="sep">/</span>
+  <a href="cart.html">Cart</a><span class="sep">/</span>
+  <span class="current">Checkout</span>
+</div>
+
+<div class="section" style="padding-top:20px">
+  <div class="section-header" style="margin-bottom:32px">
+    <h2>Secure Checkout</h2>
+    <div class="divider"></div>
+  </div>
+
+  <!-- STEPS -->
+  <div class="checkout-steps">
+    <div class="step done"><div class="step-num">✓</div><div class="step-label">Cart</div></div>
+    <div class="step-line done"></div>
+    <div class="step active"><div class="step-num">2</div><div class="step-label">Details</div></div>
+    <div class="step-line"></div>
+    <div class="step inactive"><div class="step-num">3</div><div class="step-label">Confirm</div></div>
+  </div>
+
+  <div class="checkout-layout">
+
+    <!-- FORM -->
+    <div class="checkout-form-box">
+      <form id="checkoutForm" novalidate>
+
+        <!-- Personal Info -->
+        <div class="form-section">
+          <div class="form-section-title">👤 Personal Information</div>
+          <div class="form-row">
+            <div class="form-group" id="fg-fname">
+              <label>First Name *</label>
+              <input type="text" id="fname" placeholder="Arjun"/>
+              <div class="error-msg">Please enter your first name.</div>
+            </div>
+            <div class="form-group" id="fg-lname">
+              <label>Last Name *</label>
+              <input type="text" id="lname" placeholder="Sharma"/>
+              <div class="error-msg">Please enter your last name.</div>
+            </div>
+          </div>
+          <div class="form-group" id="fg-email">
+            <label>Email Address *</label>
+            <input type="email" id="email" placeholder="arjun@example.com"/>
+            <div class="error-msg">Please enter a valid email address.</div>
+          </div>
+          <div class="form-group" id="fg-phone">
+            <label>Phone Number *</label>
+            <input type="tel" id="phone" placeholder="+91 98765 43210"/>
+            <div class="error-msg">Please enter a valid 10-digit phone number.</div>
+          </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="form-section">
+          <div class="form-section-title">📦 Shipping Address</div>
+          <div class="form-group" id="fg-address">
+            <label>Street Address *</label>
+            <input type="text" id="address" placeholder="123, MG Road, Apartment 4B"/>
+            <div class="error-msg">Please enter your street address.</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" id="fg-city">
+              <label>City *</label>
+              <input type="text" id="city" placeholder="Mumbai"/>
+              <div class="error-msg">Please enter your city.</div>
+            </div>
+            <div class="form-group" id="fg-state">
+              <label>State *</label>
+              <select id="state">
+                <option value="">Select State</option>
+                <option>Andhra Pradesh</option><option>Assam</option><option>Bihar</option>
+                <option>Chhattisgarh</option><option>Delhi</option><option>Goa</option>
+                <option>Gujarat</option><option>Haryana</option><option>Karnataka</option>
+                <option>Kerala</option><option>Madhya Pradesh</option><option>Maharashtra</option>
+                <option>Odisha</option><option>Punjab</option><option>Rajasthan</option>
+                <option>Tamil Nadu</option><option>Telangana</option><option>Uttar Pradesh</option>
+                <option>Uttarakhand</option><option>West Bengal</option>
+              </select>
+              <div class="error-msg">Please select your state.</div>
+            </div>
+          </div>
+          <div class="form-group" id="fg-pincode">
+            <label>PIN Code *</label>
+            <input type="text" id="pincode" placeholder="400001" maxlength="6" oninput="this.value=this.value.replace(/\D/g,'')"/>
+            <div class="error-msg">Please enter a valid 6-digit PIN code.</div>
+          </div>
+        </div>
+
+        <!-- Shipping Method -->
+        <div class="form-section">
+          <div class="form-section-title">🚚 Shipping Method</div>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="shipping" value="0" checked onchange="updateShipping(0)"/>
+              <div class="radio-label"><strong>Standard Delivery</strong><span>5–7 business days</span></div>
+              <div class="radio-price">Free</div>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="shipping" value="99" onchange="updateShipping(99)"/>
+              <div class="radio-label"><strong>Express Delivery</strong><span>2–3 business days</span></div>
+              <div class="radio-price">₹99</div>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="shipping" value="199" onchange="updateShipping(199)"/>
+              <div class="radio-label"><strong>Next Day Delivery</strong><span>Delivered tomorrow by 8 PM</span></div>
+              <div class="radio-price">₹199</div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div class="form-section">
+          <div class="form-section-title">💳 Payment Details</div>
+          <div class="form-group" id="fg-cardname">
+            <label>Name on Card *</label>
+            <input type="text" id="cardname" placeholder="ARJUN SHARMA"/>
+            <div class="error-msg">Please enter the cardholder name.</div>
+          </div>
+          <div class="form-group" id="fg-cardno">
+            <label>Card Number *</label>
+            <input type="text" id="cardno" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)"/>
+            <div class="error-msg">Please enter a valid 16-digit card number.</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" id="fg-expiry">
+              <label>Expiry Date *</label>
+              <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)"/>
+              <div class="error-msg">Please enter a valid expiry (MM/YY).</div>
+            </div>
+            <div class="form-group" id="fg-cvv">
+              <label>CVV *</label>
+              <input type="text" id="cvv" placeholder="•••" maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')"/>
+              <div class="error-msg">Please enter a valid 3-digit CVV.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="form-section">
+          <div class="form-section-title">📝 Order Notes <span style="font-size:0.85rem;color:var(--muted)">(Optional)</span></div>
+          <div class="form-group">
+            <label>Special Instructions</label>
+            <textarea id="notes" placeholder="Gift messages, delivery preferences, etc."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="purchase-btn">🔒 Complete Purchase</button>
+        <p style="text-align:center;font-size:0.75rem;color:var(--muted);margin-top:12px">By placing this order you agree to our Terms of Service and Privacy Policy.</p>
+      </form>
+    </div>
+
+    <!-- ORDER SUMMARY -->
+    <div class="order-summary-box">
+      <h3>Order Summary</h3>
+      <div id="order-items-list"></div>
+      <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:16px">
+        <div class="summary-row"><span>Subtotal</span><span id="co-subtotal">₹0</span></div>
+        <div class="summary-row"><span>Shipping</span><span id="co-shipping">Free</span></div>
+        <div class="summary-row"><span>GST (18%)</span><span id="co-tax">₹0</span></div>
+        <div class="summary-row total"><span>Total</span><span id="co-total">₹0</span></div>
+      </div>
+      <div class="secure-badge">🔒 <span>256-bit SSL encryption. Your data is fully protected.</span></div>
+      <div style="margin-top:16px;display:flex;gap:8px;justify-content:center;font-size:1.4rem">💳 🏧 📱 💰</div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="logo">LUXE</div><p>Curated luxury for the discerning few.</p></div>
+    <div class="footer-col"><h4>Shop</h4><ul><li><a href="shop.html">All Products</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="#">Returns</a></li><li><a href="#">Shipping</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 LUXE Store. All rights reserved.</p><div class="payment-icons">💳 🏧 📱 💰</div></div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="cart.js"></script>
+<script>
+  let shippingCost = 0;
+
+  function updateShipping(cost) {
+    shippingCost = parseInt(cost);
+    updateTotals();
+  }
+
+  function updateTotals() {
+    const sub = getCartSubtotal();
+    const tax = Math.round(sub * 0.18);
+    const total = sub + tax + shippingCost;
+    document.getElementById('co-subtotal').textContent = '₹' + sub.toLocaleString();
+    document.getElementById('co-shipping').textContent = shippingCost === 0 ? 'Free' : '₹' + shippingCost;
+    document.getElementById('co-tax').textContent = '₹' + tax.toLocaleString();
+    document.getElementById('co-total').textContent = '₹' + total.toLocaleString();
+  }
+
+  function renderOrderItems() {
+    const cart = getCart();
+    const list = document.getElementById('order-items-list');
+    if(!cart.length) { list.innerHTML = '<p style="color:var(--muted);font-size:0.85rem">No items in cart. <a href="shop.html" style="color:var(--gold)">Go shopping</a></p>'; return; }
+    list.innerHTML = cart.map(i=>`
+      <div class="order-item">
+        <div class="order-item-img">${i.emoji}</div>
+        <div class="order-item-info">
+          <div class="order-item-name">${i.name}</div>
+          <div class="order-item-qty">Qty: ${i.qty}</div>
+        </div>
+        <div class="order-item-price">₹${(i.price*i.qty).toLocaleString()}</div>
+      </div>
+    `).join('');
+    updateTotals();
+  }
+
+  // Validation
+  const CHECKS = [
+    ['fname',   'fg-fname',   v => v.length >= 2,                                    'Please enter your first name.'],
+    ['lname',   'fg-lname',   v => v.length >= 2,                                    'Please enter your last name.'],
+    ['email',   'fg-email',   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),            'Please enter a valid email.'],
+    ['phone',   'fg-phone',   v => /^\+?[\d\s\-]{10,15}$/.test(v),                  'Please enter a valid phone number.'],
+    ['address', 'fg-address', v => v.length >= 5,                                    'Please enter your address.'],
+    ['city',    'fg-city',    v => v.length >= 2,                                    'Please enter your city.'],
+    ['state',   'fg-state',   v => v !== '',                                         'Please select your state.'],
+    ['pincode', 'fg-pincode', v => /^\d{6}$/.test(v),                               'Please enter a valid PIN.'],
+    ['cardname','fg-cardname',v => v.length >= 3,                                    'Please enter the cardholder name.'],
+    ['cardno',  'fg-cardno',  v => v.replace(/\s/g,'').length === 16,               'Please enter a valid 16-digit card number.'],
+    ['expiry',  'fg-expiry',  v => /^\d{2}\/\d{2}$/.test(v),                        'Please enter a valid expiry date.'],
+    ['cvv',     'fg-cvv',     v => /^\d{3}$/.test(v),                               'Please enter a valid 3-digit CVV.'],
+  ];
+
+  document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let valid = true;
+    CHECKS.forEach(([id, fg, check]) => {
+      const el = document.getElementById(id);
+      const fgEl = document.getElementById(fg);
+      const ok = check(el.value.trim());
+      fgEl.classList.toggle('invalid', !ok);
+      if(!ok) valid = false;
+    });
+    if(valid) {
+      // Save order number and clear cart
+      const orderNum = 'LUXE-' + Math.floor(100000 + Math.random() * 900000);
+      localStorage.setItem('luxe_order', orderNum);
+      localStorage.setItem('luxe_cart', '[]');
+      updateCartBadge();
+      window.location.href = 'thankyou.html';
+    } else {
+      const first = document.querySelector('.form-group.invalid input, .form-group.invalid select');
+      if(first) first.scrollIntoView({ behavior:'smooth', block:'center' });
+      showToast('⚠️ Please fix the highlighted errors.');
+    }
+  });
+
+  renderOrderItems();
+</script>
+</body>
+</html>
