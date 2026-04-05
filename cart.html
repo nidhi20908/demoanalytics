@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LUXE Store — Cart</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+  .cart-layout { display:grid; grid-template-columns:1fr 360px; gap:40px; }
+  @media(max-width:900px){ .cart-layout{grid-template-columns:1fr;} }
+
+  .cart-items-list { display:flex; flex-direction:column; gap:16px; }
+  .cart-item {
+    background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius);
+    padding:20px; display:flex; gap:20px; align-items:center; transition:border-color 0.2s;
+  }
+  .cart-item:hover { border-color: var(--gold); }
+  .cart-item-img { font-size:2.5rem; width:72px; height:72px; background:var(--bg3); border-radius:var(--radius); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .cart-item-info { flex:1; }
+  .cart-item-name { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--cream); margin-bottom:4px; }
+  .cart-item-cat { font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); }
+  .cart-item-right { display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+  .cart-item-price { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--gold); font-weight:600; }
+  .qty-ctrl { display:flex; align-items:center; gap:10px; }
+  .qty-btn {
+    width:28px; height:28px; border:1px solid var(--border); background:var(--bg3);
+    color:var(--text); cursor:pointer; font-size:1rem; border-radius:2px;
+    transition:all 0.2s; display:flex; align-items:center; justify-content:center;
+  }
+  .qty-btn:hover { border-color:var(--gold); color:var(--gold); }
+  .qty-val { font-size:0.9rem; min-width:24px; text-align:center; }
+  .remove-btn { background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.82rem; transition:color 0.2s; letter-spacing:1px; text-transform:uppercase; }
+  .remove-btn:hover { color:var(--red); }
+
+  .cart-summary {
+    background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius);
+    padding:28px; position:sticky; top:90px; height:fit-content;
+  }
+  .cart-summary h3 { font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:var(--cream); margin-bottom:24px; }
+  .summary-row { display:flex; justify-content:space-between; margin-bottom:12px; font-size:0.88rem; color:var(--muted); }
+  .summary-row.total { font-size:1.1rem; color:var(--cream); font-weight:500; border-top:1px solid var(--border); padding-top:16px; margin-top:16px; }
+  .summary-row.total span:last-child { color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:1.4rem; }
+  .checkout-btn {
+    width:100%; background:var(--gold); color:var(--bg);
+    padding:16px; border:none; cursor:pointer;
+    font-family:'DM Sans',sans-serif; font-size:0.82rem;
+    letter-spacing:2px; text-transform:uppercase; font-weight:600;
+    border-radius:var(--radius); margin-top:20px; transition:all 0.25s;
+    text-decoration:none; display:block; text-align:center;
+  }
+  .checkout-btn:hover { background:var(--gold2); }
+  .continue-btn {
+    width:100%; background:transparent; color:var(--cream);
+    padding:14px; border:1px solid var(--border); cursor:pointer;
+    font-family:'DM Sans',sans-serif; font-size:0.82rem;
+    letter-spacing:2px; text-transform:uppercase;
+    border-radius:var(--radius); margin-top:10px; transition:all 0.25s;
+    text-decoration:none; display:block; text-align:center;
+  }
+  .continue-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+  .empty-cart { text-align:center; padding:100px 20px; }
+  .empty-cart .icon { font-size:5rem; margin-bottom:24px; }
+  .empty-cart h3 { font-family:'Cormorant Garamond',serif; font-size:2.2rem; color:var(--cream); margin-bottom:12px; }
+  .empty-cart p { color:var(--muted); margin-bottom:32px; }
+
+  .promo-input-wrap { display:flex; gap:8px; margin-top:16px; }
+  .promo-input { flex:1; background:var(--bg3); border:1px solid var(--border); color:var(--text); padding:10px 12px; font-family:'DM Sans',sans-serif; border-radius:var(--radius); outline:none; font-size:0.85rem; transition:border-color 0.2s; }
+  .promo-input:focus { border-color:var(--gold); }
+  .promo-btn { background:var(--bg3); border:1px solid var(--gold); color:var(--gold); padding:10px 16px; cursor:pointer; font-size:0.75rem; letter-spacing:1px; text-transform:uppercase; font-family:'DM Sans',sans-serif; border-radius:var(--radius); transition:all 0.2s; white-space:nowrap; }
+  .promo-btn:hover { background:var(--gold); color:var(--bg); }
+  .promo-msg { font-size:0.78rem; margin-top:6px; }
+  .promo-msg.ok { color:var(--green); }
+  .promo-msg.err { color:var(--red); }
+</style>
+</head>
+<body>
+
+<div class="promo-banner">✦ Free Shipping on Orders Over ₹999 &nbsp;|&nbsp; Code: LUXE20 for 20% Off ✦</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">LUXE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="cart.html" class="cart-btn active">🛒 Cart <span class="cart-count" id="cartCount">0</span></a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">/</span>
+  <span class="current">Shopping Cart</span>
+</div>
+
+<div class="section" style="padding-top:20px">
+  <div class="section-header" style="text-align:left;margin-bottom:36px">
+    <h2>Your Cart</h2>
+  </div>
+  <div id="cart-content"></div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="logo">LUXE</div><p>Curated luxury for the discerning few.</p></div>
+    <div class="footer-col"><h4>Shop</h4><ul><li><a href="shop.html">All Products</a></li><li><a href="index.html">Home</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="#">Track Order</a></li><li><a href="#">Returns</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 LUXE Store. All rights reserved.</p>
+    <div class="payment-icons">💳 🏧 📱 💰</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="cart.js"></script>
+<script>
+  let discount = 0;
+
+  function renderCart() {
+    const cart = getCart();
+    const c = document.getElementById('cart-content');
+    if(!cart.length) {
+      c.innerHTML = `<div class="empty-cart"><div class="icon">🛒</div><h3>Your Cart is Empty</h3><p>Looks like you haven't added anything yet.</p><a href="shop.html" class="btn-primary">Start Shopping</a></div>`;
+      return;
+    }
+    const sub = getCartSubtotal();
+    const discountAmt = Math.round(sub * discount);
+    const afterDiscount = sub - discountAmt;
+    const tax = Math.round(afterDiscount * 0.18);
+    const total = afterDiscount + tax;
+    const totalItems = cart.reduce((s,i)=>s+i.qty,0);
+
+    c.innerHTML = `
+      <div class="cart-layout">
+        <div>
+          <div class="cart-items-list">
+            ${cart.map(item=>`
+              <div class="cart-item">
+                <div class="cart-item-img">${item.emoji}</div>
+                <div class="cart-item-info">
+                  <div class="cart-item-name">${item.name}</div>
+                  <div class="cart-item-cat">${item.cat}</div>
+                  <div style="font-size:0.82rem;color:var(--muted);margin-top:4px">Unit price: ₹${item.price.toLocaleString()}</div>
+                </div>
+                <div class="cart-item-right">
+                  <div class="cart-item-price">₹${(item.price*item.qty).toLocaleString()}</div>
+                  <div class="qty-ctrl">
+                    <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+                    <span class="qty-val">${item.qty}</span>
+                    <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+                  </div>
+                  <button class="remove-btn" onclick="removeItem(${item.id})">🗑 Remove</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+            <a href="shop.html" class="btn-outline" style="padding:12px 24px;font-size:0.78rem">← Continue Shopping</a>
+          </div>
+        </div>
+        <div class="cart-summary">
+          <h3>Order Summary</h3>
+          <div class="summary-row"><span>Subtotal (${totalItems} item${totalItems!==1?'s':''})</span><span>₹${sub.toLocaleString()}</span></div>
+          ${discountAmt>0 ? `<div class="summary-row" style="color:var(--green)"><span>Discount (LUXE20)</span><span>−₹${discountAmt.toLocaleString()}</span></div>` : ''}
+          <div class="summary-row"><span>Shipping</span><span>${sub>=999?'<span style="color:var(--green)">Free</span>':'₹99'}</span></div>
+          <div class="summary-row"><span>GST (18%)</span><span>₹${tax.toLocaleString()}</span></div>
+          <div class="summary-row total"><span>Total</span><span>₹${(total+(sub<999?99:0)).toLocaleString()}</span></div>
+
+          <div style="margin-top:8px">
+            <div style="font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Promo Code</div>
+            <div class="promo-input-wrap">
+              <input type="text" class="promo-input" id="promo-code" placeholder="Enter code" />
+              <button class="promo-btn" onclick="applyPromo()">Apply</button>
+            </div>
+            <div class="promo-msg" id="promo-msg"></div>
+          </div>
+
+          <a href="checkout.html" class="checkout-btn">Proceed to Checkout →</a>
+          <a href="shop.html" class="continue-btn">Continue Shopping</a>
+        </div>
+      </div>`;
+  }
+
+  function changeQty(id, delta) {
+    const cart = getCart();
+    const item = cart.find(i=>i.id===id);
+    if(!item) return;
+    item.qty += delta;
+    if(item.qty<=0) { const newCart = cart.filter(i=>i.id!==id); saveCart(newCart); showToast('Item removed.'); }
+    else saveCart(cart);
+    updateCartBadge(); renderCart();
+  }
+
+  function removeItem(id) {
+    const cart = getCart().filter(i=>i.id!==id);
+    saveCart(cart); updateCartBadge(); renderCart();
+    showToast('Item removed from cart.');
+  }
+
+  function applyPromo() {
+    const code = document.getElementById('promo-code').value.trim().toUpperCase();
+    const msg = document.getElementById('promo-msg');
+    if(code==='LUXE20') {
+      discount = 0.20; msg.className='promo-msg ok'; msg.textContent='✓ 20% discount applied!';
+    } else if(code==='LUXE10') {
+      discount = 0.10; msg.className='promo-msg ok'; msg.textContent='✓ 10% discount applied!';
+    } else {
+      discount = 0; msg.className='promo-msg err'; msg.textContent='✗ Invalid promo code.';
+    }
+    renderCart();
+    if(code==='LUXE20'||code==='LUXE10') setTimeout(()=>{ document.getElementById('promo-msg').textContent = msg.textContent||''; },100);
+  }
+
+  renderCart();
+</script>
+</body>
+</html>
