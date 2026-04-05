@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LUXE Store — Home</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+  /* ===== HERO ===== */
+  .hero {
+    position: relative; height: calc(100vh - 80px);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; text-align: center;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.13) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.07) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a08 0%, #161612 50%, #0a0a08 100%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: linear-gradient(var(--gold) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 720px; padding: 0 24px; }
+  .hero-tag {
+    display: inline-block; border: 1px solid var(--gold); color: var(--gold);
+    font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
+    padding: 6px 18px; margin-bottom: 28px; animation: fadeUp 0.8s ease both;
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 300; line-height: 1.05;
+    color: var(--cream); animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero h1 em { color: var(--gold); font-style: italic; }
+  .hero p { margin-top: 20px; color: var(--muted); font-size: 1rem; animation: fadeUp 0.8s 0.2s ease both; }
+  .hero-btns { margin-top: 36px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; animation: fadeUp 0.8s 0.3s ease both; }
+
+  /* ===== CATEGORIES ===== */
+  .categories { padding: 60px 40px; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .cats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; max-width: 1200px; margin: 0 auto; }
+  .cat-card {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.2s; text-decoration: none; display: block;
+  }
+  .cat-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .cat-icon { font-size: 2.2rem; margin-bottom: 10px; }
+  .cat-name { font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); transition: color 0.2s; }
+  .cat-card:hover .cat-name { color: var(--gold); }
+
+  /* ===== TRUST STRIP ===== */
+  .trust-strip { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 44px 40px; }
+  .trust-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 24px; text-align: center; }
+  .trust-item .t-icon { font-size: 2rem; margin-bottom: 8px; }
+  .trust-item strong { display: block; color: var(--cream); font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .trust-item span { font-size: 0.8rem; color: var(--muted); }
+
+  /* ===== NEWSLETTER ===== */
+  .newsletter { background: var(--bg3); border-top: 1px solid var(--border); padding: 70px 40px; text-align: center; }
+  .newsletter h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 300; color: var(--cream); margin-bottom: 12px; }
+  .newsletter p { color: var(--muted); margin-bottom: 28px; }
+  .nl-form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; max-width: 500px; margin: 0 auto; }
+  .nl-form input { flex: 1; min-width: 220px; background: var(--bg2); border: 1px solid var(--border); color: var(--text); padding: 13px 16px; font-family: 'DM Sans', sans-serif; border-radius: var(--radius); outline: none; transition: border-color 0.2s; }
+  .nl-form input:focus { border-color: var(--gold); }
+  .nl-form input::placeholder { color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="promo-banner">✦ Free Shipping on Orders Over ₹999 &nbsp;|&nbsp; Code: LUXE20 for 20% Off ✦</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">LUXE</a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="cart.html" class="cart-btn">🛒 Cart <span class="cart-count" id="cartCount">0</span></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">New Collection 2025</div>
+    <h1>Crafted for the <em>Discerning</em> Few</h1>
+    <p>Discover premium products curated with an eye for detail, quality, and timeless elegance.</p>
+    <div class="hero-btns">
+      <a href="shop.html" class="btn-primary">Shop Now →</a>
+      <a href="about.html" class="btn-outline">Our Story</a>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories">
+  <div class="section-header" style="margin-bottom:32px">
+    <div class="section-tag">Browse by Category</div>
+    <h2>Shop Collections</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="cats-grid">
+    <a href="shop.html" class="cat-card"><div class="cat-icon">⌚</div><div class="cat-name">Watches</div></a>
+    <a href="shop.html" class="cat-card"><div class="cat-icon">👜</div><div class="cat-name">Bags</div></a>
+    <a href="shop.html" class="cat-card"><div class="cat-icon">💎</div><div class="cat-name">Jewellery</div></a>
+    <a href="shop.html" class="cat-card"><div class="cat-icon">👟</div><div class="cat-name">Footwear</div></a>
+    <a href="shop.html" class="cat-card"><div class="cat-icon">🕶️</div><div class="cat-name">Eyewear</div></a>
+    <a href="shop.html" class="cat-card"><div class="cat-icon">🧴</div><div class="cat-name">Skincare</div></a>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-tag">Handpicked for You</div>
+    <h2>Featured Products</h2>
+    <div class="divider"></div>
+    <p>Explore our most-loved items, crafted with exceptional materials.</p>
+  </div>
+  <div class="products-grid" id="featured-products"></div>
+  <div style="text-align:center;margin-top:48px">
+    <a href="shop.html" class="btn-primary">View All Products →</a>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-item"><div class="t-icon">🚚</div><strong>Free Shipping</strong><span>On orders above ₹999</span></div>
+    <div class="trust-item"><div class="t-icon">🔒</div><strong>Secure Payments</strong><span>SSL encrypted checkout</span></div>
+    <div class="trust-item"><div class="t-icon">↩️</div><strong>Easy Returns</strong><span>30-day hassle-free returns</span></div>
+    <div class="trust-item"><div class="t-icon">⭐</div><strong>Premium Quality</strong><span>Curated luxury products</span></div>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <h2>Stay in the Loop</h2>
+  <p>Subscribe for early access to new arrivals and exclusive offers.</p>
+  <div class="nl-form">
+    <input type="email" placeholder="your@email.com" id="nl-email"/>
+    <button class="btn-primary" onclick="subscribeNewsletter()">Subscribe</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">LUXE</div>
+      <p>A curated luxury shopping destination offering the finest products for those who appreciate the art of living well.</p>
+    </div>
+    <div class="footer-col"><h4>Shop</h4><ul>
+      <li><a href="shop.html">All Products</a></li>
+      <li><a href="shop.html">Watches</a></li>
+      <li><a href="shop.html">Bags</a></li>
+      <li><a href="shop.html">Jewellery</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Company</h4><ul>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms of Service</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Support</h4><ul>
+      <li><a href="#">Track Order</a></li>
+      <li><a href="#">Returns</a></li>
+      <li><a href="#">Shipping Info</a></li>
+      <li><a href="contact.html">FAQ</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 LUXE Store. All rights reserved.</p>
+    <div class="payment-icons">💳 🏧 📱 💰</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="cart.js"></script>
+<script>
+  renderProductCards('featured-products', 4);
+  function subscribeNewsletter() {
+    const v = document.getElementById('nl-email').value.trim();
+    if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+      showToast('🎉 Subscribed! Welcome to LUXE.');
+      document.getElementById('nl-email').value = '';
+    } else { showToast('⚠️ Please enter a valid email.'); }
+  }
+</script>
+</body>
+</html>
